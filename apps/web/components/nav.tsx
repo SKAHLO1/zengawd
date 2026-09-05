@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,9 +16,14 @@ export function Nav() {
     <header className="sticky top-0 z-40 border-b border-[#1e1e1e] bg-[#050505]/95 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-7 w-7 items-center justify-center border border-[#2196f3]">
-            <span className="h-2 w-2 bg-[#2196f3]" />
-          </span>
+          <Image
+            src="/zengawd-mark.png"
+            alt="Zengawd"
+            width={28}
+            height={28}
+            priority
+            className="h-7 w-7 rounded-[6px]"
+          />
           <span className="font-display text-2xl tracking-[0.18em] text-[#f2ede6]">ZENGAWD</span>
           <span className="hidden font-mono text-[10px] tracking-widest text-[#5a5a5a] md:inline">ONCHAIN TRANSACTION GUARD</span>
         </Link>

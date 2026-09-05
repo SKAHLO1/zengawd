@@ -1,5 +1,8 @@
 version: "1"
 kind: miner
+# Self-assigned and must be unused: requests route on it (/engine/v1/ask/{id}).
+# Checked free against all 129 active miners on 2026-09-05.
+id: 84532
 slug: zengawd-transaction-guard
 protocol: generic
 name: Zengawd Transaction Guard
@@ -26,16 +29,44 @@ circuit_cooldown_seconds: 60
 
 endpoints:
   - path: /api/telegraph/ask
+    external_path: /api/telegraph/ask
     method: POST
     description: >
-      Evaluate one subject for transaction risk. Supply the address or URL in `target`, or leave it out and it is read
-      from the free-form `query`. Returns INSUFFICIENT_SIGNAL rather than a guess when no fresh verdict is available.
-    intents: [FRAUD_DETECTION, TRANSACTION_RISK_ASSESSMENT]
+      Score one EVM subject for transaction risk. Give it a contract address, a wallet address or a dApp URL and it
+      returns ALLOW / WARN / BLOCK with a 0-100 risk score, a plain-English reason, and the hash of the verdict as
+      recorded on Base Sepolia. Answers a question like "is this token safe to approve" or "is this contract a scam".
+      Returns INSUFFICIENT_SIGNAL rather than guessing when too few signals are available.
+    intents: [FRAUD_DETECTION]
     content_type: application/json
     params:
-      query: Is 0xdAC17F958D2ee523a2206206994597C13D831ec7 safe to approve on Ethereum mainnet?
-      target: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-      chainId: 1
+      body:
+        required:
+          - name: query
+            type: string
+            intents: ["*"]
+            description: >
+              The risk question in plain language, naming the subject to evaluate, e.g. "Is
+              0xdAC17F958D2ee523a2206206994597C13D831ec7 safe to approve on Ethereum mainnet?". When `target` is
+              absent the subject is parsed out of this text, so it must contain a 0x address or an http(s) URL.
+        optional:
+          - name: target
+            type: string
+            intents: ["*"]
+            description: >
+              The subject to evaluate, as a 0x-prefixed 40-hex EVM address or an http(s) URL. Overrides whatever the
+              query names. Anything else is rejected with HTTP 400.
+          - name: chainId
+            type: integer
+            intents: ["*"]
+            description: >
+              EVM chain id the subject lives on. Defaults to 1 (Ethereum). Supported: 1, 8453 (Base) and 84532
+              (Base Sepolia). Passing an address that is not deployed on the given chain yields INSUFFICIENT_SIGNAL.
+          - name: from
+            type: string
+            intents: ["*"]
+            description: >
+              The wallet that would sign the transaction, as a 0x-prefixed 40-hex address. Optional; defaults to the
+              zero address. Supplying it enables counterparty-balance signals.
 
 input_schema:
   type: object
@@ -106,4 +137,3 @@ semantics:
     reason_field: reason
   supported_intents:
     - FRAUD_DETECTION
-    - TRANSACTION_RISK_ASSESSMENT
