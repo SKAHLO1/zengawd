@@ -1,0 +1,109 @@
+version: "1"
+kind: miner
+slug: zengawd-transaction-guard
+protocol: generic
+name: Zengawd Transaction Guard
+description: >
+  Scores an EVM contract, wallet or dApp URL for transaction risk. Calldata is decoded locally, on-chain facts are read
+  from RPC, and the result is a composite 0-100 risk score with an ALLOW / WARN / BLOCK label whose keccak256 hash is
+  recorded on Base Sepolia in ZengawdPolicy. Answers are served from the verdict store when fresh, so identical
+  questions do not re-run the pipeline.
+
+base_url: https://REPLACE-WITH-YOUR-DEPLOYMENT
+
+docs:
+  website: https://REPLACE-WITH-YOUR-DEPLOYMENT
+  documentation: https://REPLACE-WITH-YOUR-DEPLOYMENT
+  repository: https://github.com/REPLACE-ME/zengawd
+
+auth:
+  type: none
+
+rate_limit_per_sec: 1
+cache_ttl_sec: 300
+circuit_threshold: 3
+circuit_cooldown_seconds: 60
+
+endpoints:
+  - path: /api/telegraph/ask
+    method: POST
+    description: >
+      Evaluate one subject for transaction risk. Supply the address or URL in `target`, or leave it out and it is read
+      from the free-form `query`. Returns INSUFFICIENT_SIGNAL rather than a guess when no fresh verdict is available.
+    intents: [FRAUD_DETECTION, TRANSACTION_RISK_ASSESSMENT]
+    content_type: application/json
+    params:
+      query: Is 0xdAC17F958D2ee523a2206206994597C13D831ec7 safe to approve on Ethereum mainnet?
+      target: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      chainId: 1
+
+input_schema:
+  type: object
+  required:
+    - query
+  properties:
+    query:
+      type: string
+      description: Free-form risk question. The subject is read from this when `target` is absent.
+    target:
+      type: string
+      description: Contract address, wallet address or dApp URL to evaluate. Overrides whatever the query names.
+    chainId:
+      type: integer
+      description: EVM chain id. Defaults to 1. Supported chains are 1, 8453 and 84532.
+    from:
+      type: string
+      description: Wallet that would sign the transaction, when known. Defaults to the zero address.
+
+output_schema:
+  type: object
+  required:
+    - label
+    - confidence
+    - reason
+  properties:
+    intent:
+      type: string
+      description: Always TRANSACTION_RISK_ASSESSMENT.
+    label:
+      type: string
+      description: ALLOW, WARN, BLOCK or INSUFFICIENT_SIGNAL.
+    score:
+      type: number
+      description: Composite risk, 0 (safe) to 100 (hostile). Null when the label is INSUFFICIENT_SIGNAL.
+    confidence:
+      type: number
+      description: 0-1 evidence coverage - the share of applicable signals that actually returned.
+    reason:
+      type: string
+      description: Plain-English rationale drawn from the contributing signals.
+    target:
+      type: string
+      description: The subject that was evaluated.
+    chainId:
+      type: integer
+      description: Chain the subject was evaluated on.
+    signalCount:
+      type: integer
+      description: Number of signals that returned usable evidence.
+    verdictHash:
+      type: string
+      description: keccak256 of the canonical verdict JSON.
+    attestationTx:
+      type: string
+      description: Base Sepolia transaction recording the verdict, when attestation is configured.
+    cached:
+      type: boolean
+      description: True when served from a stored verdict rather than a fresh run.
+    ageSeconds:
+      type: integer
+      description: Age of the served verdict in seconds. 0 for a fresh run.
+
+semantics:
+  signal_mapping:
+    confidence_field: confidence
+    label_field: label
+    reason_field: reason
+  supported_intents:
+    - FRAUD_DETECTION
+    - TRANSACTION_RISK_ASSESSMENT
