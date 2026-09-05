@@ -1,0 +1,178 @@
+[
+  {
+    "address": "0xdb6f6c8b940110617cf66e50c271e2278c8a32df",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "Scam Inu (SINU)",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x91672284b49de99f194721bdd729a6739b87f7e7",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "SushiSwap: RUGS",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x87bdbb2e6cdacd72e147d48e9f3659e0ac665aa5",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "SushiSwap: RUG",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x6c94954d0b265f657a4a1b35dfaa8b73d1a3f199",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "RUG.WTF (RUG)",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x98f9df7ad11ee79377e8b0be8680eda0dad35400",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "Scam ALERT: Medium Risk. Audit made by Q DeFi Rating",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x5EE8abAC67C798F9A11eD5dcC2C49fAf2b5359e0",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "This is Fine: an announced rug",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0xf0042b46d69ad6588c683f7e99e4ccb3f252717a",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "Scam ALERT: HIGH probability. Audit made by Q DeFi Rating",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0xc57e4f6e40c600742bdf33a687bd6ef38ae9a846",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "Scam ALERT: UNKNOWN status. Audit made by Q DeFi Rating",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x6911fbd20a1baf5dec2a64c336d7b0320fc5de41",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "SushiSwap: Scam",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x9d24b60d5eefe710348cc59173b166a256cbffcd",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "PoorRug (Poor)",
+    "source": "brianleect/etherscan-labels combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9 (Etherscan public name tag)",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json"
+  },
+  {
+    "address": "0x101ce0cedd142f199c9ef61739ae59b6611a0fc0",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x164e84226882c385940134f5b292cb89bc4feed6",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x0716abdc9618dfe762e7ea7ff2cd0131cd3426d5",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x99d01153a8c5d35bad737c28780da835da0a9ce0",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x5fc21eb62919c57c2cd8f45123d684fa82013b6c",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0xac75724a9713db3d3d1a82847fbdb41770445e17",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0xec2a84a0d06b3ff2a5dc2cd86b159a39d1eb8371",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x276ca1b5b8d8dc239dfdc3f9c69121050d460d4d",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0xdd892ea715d508a9b8187aa8aabdad6d16477323",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x17b421d2eb40055c08f13333c558a9384ed55768",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x0f732ccbb681021ba33d99f976b9a6199f8e72d8",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  },
+  {
+    "address": "0x8a4878acb0e3de78a57477dbb86d84925e3de0db",
+    "chainId": 1,
+    "label": "malicious",
+    "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)",
+    "source": "scamsniffer/scam-database blacklist/address.json @ 591e981264cc8e0abb6541c186a8fb7b69f15b59 (2026-09-04)",
+    "sourceUrl": "https://github.com/scamsniffer/scam-database/blob/591e981264cc8e0abb6541c186a8fb7b69f15b59/blacklist/address.json"
+  }
+]

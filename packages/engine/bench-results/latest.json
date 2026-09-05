@@ -1,0 +1,696 @@
+{
+  "summary": {
+    "ranAt": "2026-09-05T03:43:15.764Z",
+    "fixtures": 45,
+    "insufficient": 45,
+    "precision": null,
+    "recall": null,
+    "falsePositiveRate": null,
+    "escalationRate": 0,
+    "meanCostUsd": 0.01655172413793104,
+    "meanLatencyMs": 39247,
+    "confusion": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    }
+  },
+  "rows": [
+    {
+      "fixture": {
+        "address": "0xdb6f6c8b940110617cf66e50c271e2278c8a32df",
+        "label": "malicious",
+        "name": "Scam Inu (SINU)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 75,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 62267,
+      "id": "95f7e2c7-01b4-4fa6-a3c3-59e85b901c86"
+    },
+    {
+      "fixture": {
+        "address": "0x91672284b49de99f194721bdd729a6739b87f7e7",
+        "label": "malicious",
+        "name": "SushiSwap: RUGS"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 85,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 40602,
+      "id": "3d3550f5-eed0-4b32-8e57-4b61f941e5d0"
+    },
+    {
+      "fixture": {
+        "address": "0x87bdbb2e6cdacd72e147d48e9f3659e0ac665aa5",
+        "label": "malicious",
+        "name": "SushiSwap: RUG"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 85,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 39415,
+      "id": "fa4f2415-9979-47f6-846c-32537cdb9906"
+    },
+    {
+      "fixture": {
+        "address": "0x6c94954d0b265f657a4a1b35dfaa8b73d1a3f199",
+        "label": "malicious",
+        "name": "RUG.WTF (RUG)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 3,
+      "ms": 41495,
+      "id": "375ee184-965a-48b0-a887-dd6fdeec02d9"
+    },
+    {
+      "fixture": {
+        "address": "0x98f9df7ad11ee79377e8b0be8680eda0dad35400",
+        "label": "malicious",
+        "name": "Scam ALERT: Medium Risk. Audit made by Q DeFi Rating"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 85,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 37017,
+      "id": "ae505b2b-6034-4d11-8b71-ff8fda720d74"
+    },
+    {
+      "fixture": {
+        "address": "0x5EE8abAC67C798F9A11eD5dcC2C49fAf2b5359e0",
+        "label": "malicious",
+        "name": "This is Fine: an announced rug"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 85,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 39749,
+      "id": "92c70972-e62e-43b9-8dbf-d18a02ebd626"
+    },
+    {
+      "fixture": {
+        "address": "0xf0042b46d69ad6588c683f7e99e4ccb3f252717a",
+        "label": "malicious",
+        "name": "Scam ALERT: HIGH probability. Audit made by Q DeFi Rating"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 65,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 1,
+      "unavailable": 3,
+      "ms": 42754,
+      "id": "d872309f-af1b-48c7-8ff1-b00a01199d7f"
+    },
+    {
+      "fixture": {
+        "address": "0xc57e4f6e40c600742bdf33a687bd6ef38ae9a846",
+        "label": "malicious",
+        "name": "Scam ALERT: UNKNOWN status. Audit made by Q DeFi Rating"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 85,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 41778,
+      "id": "4ef84c0a-297d-4143-820e-b5b3e093808b"
+    },
+    {
+      "fixture": {
+        "address": "0x6911fbd20a1baf5dec2a64c336d7b0320fc5de41",
+        "label": "malicious",
+        "name": "SushiSwap: Scam"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 65,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 1,
+      "unavailable": 3,
+      "ms": 62348,
+      "id": "b2509be5-c808-4a86-85ec-a4f19a7ccb61"
+    },
+    {
+      "fixture": {
+        "address": "0x9d24b60d5eefe710348cc59173b166a256cbffcd",
+        "label": "malicious",
+        "name": "PoorRug (Poor)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 75,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 46214,
+      "id": "8f2ba6a9-4309-4824-81f0-7735a77c4a01"
+    },
+    {
+      "fixture": {
+        "address": "0x101ce0cedd142f199c9ef61739ae59b6611a0fc0",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 25148,
+      "id": "5fef4e64-84d2-4d51-b1de-75e9c7bd7738"
+    },
+    {
+      "fixture": {
+        "address": "0x164e84226882c385940134f5b292cb89bc4feed6",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 36972,
+      "id": "4ea38292-3a7f-41ba-86ac-5d888dbd069c"
+    },
+    {
+      "fixture": {
+        "address": "0x0716abdc9618dfe762e7ea7ff2cd0131cd3426d5",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 37188,
+      "id": "bd4f312f-7027-41d9-a50c-65af775371d8"
+    },
+    {
+      "fixture": {
+        "address": "0x99d01153a8c5d35bad737c28780da835da0a9ce0",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 35530,
+      "id": "5559e22f-a0bf-478f-a099-1b3acc526355"
+    },
+    {
+      "fixture": {
+        "address": "0x5fc21eb62919c57c2cd8f45123d684fa82013b6c",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 39062,
+      "id": "58bc8631-0274-471c-becc-d874e4bbf4ed"
+    },
+    {
+      "fixture": {
+        "address": "0xac75724a9713db3d3d1a82847fbdb41770445e17",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 27638,
+      "id": "7d7ac58d-b290-415b-a217-5b1c2a7f0b36"
+    },
+    {
+      "fixture": {
+        "address": "0xec2a84a0d06b3ff2a5dc2cd86b159a39d1eb8371",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 36915,
+      "id": "f0a578b6-173f-447b-a1a2-4bd2ca040cd8"
+    },
+    {
+      "fixture": {
+        "address": "0x276ca1b5b8d8dc239dfdc3f9c69121050d460d4d",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 42217,
+      "id": "b4f403de-ebc9-4dd7-b486-8145fca36100"
+    },
+    {
+      "fixture": {
+        "address": "0xdd892ea715d508a9b8187aa8aabdad6d16477323",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 39203,
+      "id": "fa8cf5ee-c628-42b4-86ce-195b37f1b61a"
+    },
+    {
+      "fixture": {
+        "address": "0x17b421d2eb40055c08f13333c558a9384ed55768",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 37933,
+      "id": "edb51563-886e-4659-863e-e1bb36e6a746"
+    },
+    {
+      "fixture": {
+        "address": "0x0f732ccbb681021ba33d99f976b9a6199f8e72d8",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 39416,
+      "id": "eba20356-a2b6-4a0b-9e3b-5b9704867a93"
+    },
+    {
+      "fixture": {
+        "address": "0x8a4878acb0e3de78a57477dbb86d84925e3de0db",
+        "label": "malicious",
+        "name": "ScamSniffer blacklisted contract (wallet drainer / phishing)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 38446,
+      "id": "00498c26-e9e4-48b7-b5c0-261c85f45f30"
+    },
+    {
+      "fixture": {
+        "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "label": "benign",
+        "name": "USDC (Circle)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 49.95,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 3,
+      "unavailable": 1,
+      "ms": 68516,
+      "id": "fc005fef-a17c-4383-bfe3-18c15719ffa7"
+    },
+    {
+      "fixture": {
+        "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "label": "benign",
+        "name": "WETH9"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.03,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 40365,
+      "id": "4ef869fd-4579-49a3-9d94-8e345b53f063"
+    },
+    {
+      "fixture": {
+        "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "label": "benign",
+        "name": "DAI Stablecoin"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.03,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 35837,
+      "id": "6b395c27-14ad-48dd-8254-8b1cee122f6c"
+    },
+    {
+      "fixture": {
+        "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "label": "benign",
+        "name": "Tether USD (USDT)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 52548,
+      "id": "0ec7c715-0563-4ed1-acb9-321b310a4c08"
+    },
+    {
+      "fixture": {
+        "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+        "label": "benign",
+        "name": "Wrapped BTC (WBTC)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 40163,
+      "id": "f18c2351-ffc0-4d54-8a4f-7e921a48f91f"
+    },
+    {
+      "fixture": {
+        "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+        "label": "benign",
+        "name": "Uniswap (UNI)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.03,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 40495,
+      "id": "0564ad8b-ca35-4745-b99d-d781711b0209"
+    },
+    {
+      "fixture": {
+        "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+        "label": "benign",
+        "name": "Chainlink (LINK)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 5.33,
+      "escalated": false,
+      "costUsd": 0.04,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 28017,
+      "id": "6ab77765-a2e8-4d21-96f5-4bf0af4d4b04"
+    },
+    {
+      "fixture": {
+        "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+        "label": "benign",
+        "name": "Aave (AAVE)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 25,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 39648,
+      "id": "098fcea5-3a76-4853-988c-edc7f956b4dc"
+    },
+    {
+      "fixture": {
+        "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+        "label": "benign",
+        "name": "Lido stETH"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 39769,
+      "id": "9d4f3afa-a785-4b6b-beff-5a357fd57709"
+    },
+    {
+      "fixture": {
+        "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+        "label": "benign",
+        "name": "Lido wstETH"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 65,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 1,
+      "unavailable": 3,
+      "ms": 40725,
+      "id": "ae4b7103-e07a-448a-9baf-d1ec8b3862ff"
+    },
+    {
+      "fixture": {
+        "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        "label": "benign",
+        "name": "Uniswap V2 Router02"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 41361,
+      "id": "56170148-58a2-45ee-80fa-2ebb6a9e65f1"
+    },
+    {
+      "fixture": {
+        "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+        "label": "benign",
+        "name": "Uniswap V3 SwapRouter"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 41583,
+      "id": "b192d883-9561-4ee5-aeee-6dca36e1239e"
+    },
+    {
+      "fixture": {
+        "address": "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        "label": "benign",
+        "name": "Uniswap Universal Router"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 37160,
+      "id": "7431a8de-f4af-4ba1-b136-edeb4f09ef32"
+    },
+    {
+      "fixture": {
+        "address": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+        "label": "benign",
+        "name": "Permit2"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 15116,
+      "id": "8b7cf62f-b4fd-4f6e-889e-57f039fbf942"
+    },
+    {
+      "fixture": {
+        "address": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+        "label": "benign",
+        "name": "Aave V3 Pool"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 36978,
+      "id": "c0678bfc-2587-4765-8af7-67198693300b"
+    },
+    {
+      "fixture": {
+        "address": "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
+        "label": "benign",
+        "name": "Compound cUSDC (v2)"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 23.67,
+      "escalated": false,
+      "costUsd": 0.02,
+      "ok": 2,
+      "unavailable": 2,
+      "ms": 44049,
+      "id": "10d2e457-292e-44fb-80c1-3f7d30602f8c"
+    },
+    {
+      "fixture": {
+        "address": "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
+        "label": "benign",
+        "name": "OpenSea Seaport 1.5"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 44544,
+      "id": "980f70e6-ba75-4ee5-b3ed-d8e6547b1ab4"
+    },
+    {
+      "fixture": {
+        "address": "0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7",
+        "label": "benign",
+        "name": "Curve 3pool"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 27620,
+      "id": "1fab80fc-bec4-4637-956e-5abf607b5cb5"
+    },
+    {
+      "fixture": {
+        "address": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+        "label": "benign",
+        "name": "Balancer Vault"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 15533,
+      "id": "e771b5fc-a3cd-427c-9006-13a2d42d0371"
+    },
+    {
+      "fixture": {
+        "address": "0x1111111254EEB25477B68fb85Ed929f73A960582",
+        "label": "benign",
+        "name": "1inch Aggregation Router V5"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 39817,
+      "id": "635fa39b-9bdd-4a26-bd26-bc667e4a14de"
+    },
+    {
+      "fixture": {
+        "address": "0x35D1b3F3D7966A1DFe207aa4514C12a259A0492B",
+        "label": "benign",
+        "name": "MakerDAO Vat"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 43641,
+      "id": "bee9ba75-efb4-4b6a-8062-123c73f1b689"
+    },
+    {
+      "fixture": {
+        "address": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+        "label": "benign",
+        "name": "ENS Registry"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": 0.01,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 25706,
+      "id": "e099dc2f-2728-4a6b-bb54-0a96cbbdf5ca"
+    },
+    {
+      "fixture": {
+        "address": "0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2",
+        "label": "benign",
+        "name": "Safe Proxy Factory 1.3.0"
+      },
+      "verdict": "INSUFFICIENT_SIGNAL",
+      "score": 0,
+      "escalated": false,
+      "costUsd": null,
+      "ok": 0,
+      "unavailable": 1,
+      "ms": 37627,
+      "id": "0341c2dc-8f31-4130-aec0-4d64a73daafc"
+    }
+  ]
+}

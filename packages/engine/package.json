@@ -1,0 +1,27 @@
+{
+  "name": "@zengawd/engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "bench": "tsx scripts/bench.ts",
+    "calibrate": "tsx scripts/calibrate.ts"
+  },
+  "dependencies": {
+    "@zengawd/db": "workspace:*",
+    "@zengawd/telegraph": "workspace:*",
+    "drizzle-orm": "^0.44.5",
+    "viem": "^2.37.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.17.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
