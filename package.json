@@ -1,0 +1,30 @@
+{
+  "name": "zengawd",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @zengawd/web dev",
+    "build": "pnpm -r --filter './packages/*' build && pnpm --filter @zengawd/web build",
+    "test": "pnpm -r --filter './packages/*' test",
+    "typecheck": "pnpm -r typecheck",
+    "db:migrate": "pnpm --filter @zengawd/db migrate",
+    "bench": "pnpm --filter @zengawd/engine bench",
+    "calibrate": "pnpm --filter @zengawd/engine calibrate",
+    "watcher": "pnpm --filter @zengawd/watcher start",
+    "watcher:once": "pnpm --filter @zengawd/watcher once",
+    "forge:test": "pnpm --filter @zengawd/contracts test"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "sharp"
+    ]
+  }
+}
