@@ -1,8 +1,11 @@
-import Database from "better-sqlite3";
-import { drizzle, type BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
-import { migrate } from "drizzle-orm/better-sqlite3/migrator";
+import { drizzle as drizzlePg, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { migrate as migratePg } from "drizzle-orm/postgres-js/migrator";
+import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
+import { migrate as migratePglite } from "drizzle-orm/pglite/migrator";
+import postgres from "postgres";
+import { PGlite } from "@electric-sql/pglite";
 import { randomUUID } from "node:crypto";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as schema from "./schema";
@@ -10,25 +13,40 @@ import * as schema from "./schema";
 export * from "./schema";
 export { schema };
 
-export type Db = BetterSQLite3Database<typeof schema>;
+/**
+ * Query operators are re-exported so that @zengawd/db is the only package depending on drizzle-orm.
+ * When several packages depend on it directly, pnpm resolves a separate instance per peer set and the
+ * two copies' types stop being assignable to each other.
+ */
+export { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+
+/**
+ * Both drivers speak the same Postgres dialect and expose the same query builder, so call sites are
+ * driver-agnostic: postgres.js against a real server, PGlite (in-process Postgres) for tests.
+ * Typed as the postgres.js flavour because the shared `PgDatabase` supertype erases select() result
+ * types; the PGlite handle is structurally identical for everything used here.
+ */
+export type Db = PostgresJsDatabase<typeof schema>;
 
 const MIGRATIONS_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "../drizzle");
 
 /**
- * Resolve DATABASE_URL to a SQLite file path.
- * Accepts "file:./relative.sqlite", "file:/abs/path.sqlite", a bare path, or ":memory:".
- * Relative paths resolve against the repository root (the directory containing pnpm-workspace.yaml).
+ * Resolve DATABASE_URL to a Postgres connection string, or ":memory:" for an in-process PGlite instance.
+ * A `file:` URL is rejected outright: the SQLite build is gone (see DECISIONS.md 3).
  */
-export function resolveDatabasePath(url: string | undefined = process.env.DATABASE_URL): string {
-  const raw = (url && url.trim()) || "file:./data/zengawd.sqlite";
-  if (raw.startsWith("postgres")) {
+export function resolveDatabaseUrl(url: string | undefined = process.env.DATABASE_URL): string {
+  const raw = url?.trim() || "";
+  if (!raw || raw === ":memory:") return ":memory:";
+  if (raw.startsWith("file:") || raw.endsWith(".sqlite")) {
     throw new Error(
-      "DATABASE_URL points at Postgres, but this build ships the SQLite Drizzle driver only (see DECISIONS.md).",
+      `DATABASE_URL "${raw}" points at a SQLite file, but this build ships the Postgres Drizzle driver only. ` +
+        "Use a postgres:// connection string (see DECISIONS.md 3).",
     );
   }
-  const path = raw.startsWith("file:") ? raw.slice("file:".length) : raw;
-  if (path === ":memory:") return path;
-  return resolve(findRepoRoot(), path);
+  if (!raw.startsWith("postgres://") && !raw.startsWith("postgresql://")) {
+    throw new Error(`DATABASE_URL "${raw}" is not a postgres:// connection string.`);
+  }
+  return raw;
 }
 
 export function findRepoRoot(): string {
@@ -42,24 +60,51 @@ export function findRepoRoot(): string {
   return process.cwd();
 }
 
-let singleton: Db | undefined;
+let singleton: Promise<Db> | undefined;
 
-/** Open (or reuse) the process-wide database handle. Pending migrations are applied on first open. */
-export function getDb(): Db {
-  if (singleton) return singleton;
-  singleton = openDb(resolveDatabasePath());
+/**
+ * Open (or reuse) the process-wide database handle.
+ *
+ * Against a real Postgres, migrations are NOT applied here: on serverless the migrations folder is not
+ * traced into the function bundle, and concurrent cold starts would race. Run `pnpm db:migrate` as a
+ * deploy step instead. An in-process PGlite database is created empty every time, so it migrates itself.
+ */
+export function getDb(): Promise<Db> {
+  if (!singleton) singleton = openDb(resolveDatabaseUrl());
   return singleton;
 }
 
-/** Open a fresh handle at an explicit path (tests use ":memory:"). Migrations are applied. */
-export function openDb(path: string): Db {
-  if (path !== ":memory:") mkdirSync(dirname(path), { recursive: true });
-  const sqlite = new Database(path);
-  if (path !== ":memory:") sqlite.pragma("journal_mode = WAL");
-  sqlite.pragma("busy_timeout = 5000");
-  const db = drizzle(sqlite, { schema });
-  migrate(db, { migrationsFolder: MIGRATIONS_DIR });
-  return db;
+/**
+ * Open a fresh handle. `":memory:"` gives an in-process PGlite database (tests); anything else is
+ * treated as a Postgres connection string.
+ *
+ * Pooled connection strings (Supabase's port 6543, pgbouncer in transaction mode) cannot hold prepared
+ * statements, so prepared statements are disabled whenever the URL looks pooled.
+ */
+export async function openDb(url: string, opts: { migrate?: boolean } = {}): Promise<Db> {
+  const runMigrations = opts.migrate ?? url === ":memory:";
+
+  if (url === ":memory:") {
+    const client = new PGlite();
+    const db = drizzlePglite(client, { schema });
+    if (runMigrations) await migratePglite(db, { migrationsFolder: MIGRATIONS_DIR });
+    return db as unknown as Db;
+  }
+
+  const client = postgres(url, {
+    max: Number(process.env.DATABASE_POOL_MAX ?? 5),
+    idle_timeout: 20,
+    connect_timeout: 10,
+    prepare: !isPooledUrl(url),
+  });
+  const db = drizzlePg(client, { schema });
+  if (runMigrations) await migratePg(db, { migrationsFolder: MIGRATIONS_DIR });
+  return db as unknown as Db;
+}
+
+/** Supabase's transaction-mode pooler listens on 6543 and cannot hold prepared statements. */
+export function isPooledUrl(url: string): boolean {
+  return url.includes(":6543") || url.includes("pgbouncer=true") || url.includes("pooler.supabase.com");
 }
 
 export function newId(): string {

@@ -1,26 +1,27 @@
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, boolean, index } from "drizzle-orm/pg-core";
 
 /**
  * Schema mirrors section 9 of the Zengawd spec column-for-column.
- * Dialect: SQLite (see DECISIONS.md: Postgres was unavailable in the dev environment).
- * JSONB columns are stored as TEXT holding verbatim JSON. They are never truncated at write time.
+ * Dialect: Postgres (see DECISIONS.md 3: SQLite was a dev-environment stopgap, replaced once a managed
+ * Postgres was available). JSON columns stay TEXT, not jsonb: miner responses are stored verbatim, and
+ * jsonb would normalise key order and whitespace. They are never truncated at write time.
  */
 
-export const intentRequests = sqliteTable(
+export const intentRequests = pgTable(
   "intent_requests",
   {
     id: text("id").primaryKey(),
     verdictId: text("verdict_id"),
     intent: text("intent").notNull(),
-    requestedConfidence: real("requested_confidence").notNull(),
+    requestedConfidence: doublePrecision("requested_confidence").notNull(),
     deadlineMs: integer("deadline_ms").notNull(),
     /** "ok" | "unavailable" */
     status: text("status").notNull(),
     minerId: text("miner_id"),
     minerName: text("miner_name"),
-    returnedConfidence: real("returned_confidence"),
+    returnedConfidence: doublePrecision("returned_confidence"),
     latencyMs: integer("latency_ms").notNull(),
-    costUsd: real("cost_usd"),
+    costUsd: doublePrecision("cost_usd"),
     settlementTxHash: text("settlement_tx_hash"),
     signalHash: text("signal_hash"),
     /** Verbatim JSON of what was sent to the node. */
@@ -36,7 +37,7 @@ export const intentRequests = sqliteTable(
   ],
 );
 
-export const verdicts = sqliteTable(
+export const verdicts = pgTable(
   "verdicts",
   {
     id: text("id").primaryKey(),
@@ -46,13 +47,13 @@ export const verdicts = sqliteTable(
     selector: text("selector").notNull(),
     calldata: text("calldata").notNull(),
     verdict: text("verdict").notNull(),
-    score: real("score").notNull(),
-    escalated: integer("escalated", { mode: "boolean" }).notNull(),
+    score: doublePrecision("score").notNull(),
+    escalated: boolean("escalated").notNull(),
     verdictHash: text("verdict_hash").notNull(),
     onchainTxHash: text("onchain_tx_hash"),
     stage1LatencyMs: integer("stage1_latency_ms").notNull(),
     stage2LatencyMs: integer("stage2_latency_ms"),
-    totalCostUsd: real("total_cost_usd"),
+    totalCostUsd: doublePrecision("total_cost_usd"),
     /** Full Verdict object (signals included) as verbatim JSON, for the UI and the audit trail. */
     payload: text("payload").notNull(),
     createdAt: text("created_at").notNull(),
@@ -60,7 +61,7 @@ export const verdicts = sqliteTable(
   (t) => [index("verdicts_user_idx").on(t.userAddress), index("verdicts_created_idx").on(t.createdAt)],
 );
 
-export const watchedApprovals = sqliteTable(
+export const watchedApprovals = pgTable(
   "watched_approvals",
   {
     id: text("id").primaryKey(),
@@ -74,9 +75,9 @@ export const watchedApprovals = sqliteTable(
     allowance: text("allowance").notNull(),
     lastVerdictId: text("last_verdict_id"),
     lastVerdict: text("last_verdict"),
-    lastScore: real("last_score"),
+    lastScore: doublePrecision("last_score"),
     lastCheckedAt: text("last_checked_at"),
-    autoRevokeEnabled: integer("auto_revoke_enabled", { mode: "boolean" }).notNull().default(false),
+    autoRevokeEnabled: boolean("auto_revoke_enabled").notNull().default(false),
     /** Set when the watcher flips ALLOW to BLOCK; cleared when revoked. */
     revocationRecommendedAt: text("revocation_recommended_at"),
     revocationTxHash: text("revocation_tx_hash"),
@@ -85,27 +86,27 @@ export const watchedApprovals = sqliteTable(
   (t) => [index("watched_user_idx").on(t.userAddress)],
 );
 
-export const watchedUsers = sqliteTable("watched_users", {
+export const watchedUsers = pgTable("watched_users", {
   userAddress: text("user_address").primaryKey(),
   chainId: integer("chain_id").notNull(),
   /** Explicit, separately-recorded opt-in. Defaults to false. */
-  autoRevokeEnabled: integer("auto_revoke_enabled", { mode: "boolean" }).notNull().default(false),
+  autoRevokeEnabled: boolean("auto_revoke_enabled").notNull().default(false),
   autoRevokeOptInAt: text("auto_revoke_opt_in_at"),
   safeAddress: text("safe_address"),
   createdAt: text("created_at").notNull(),
 });
 
-export const calibrationRuns = sqliteTable(
+export const calibrationRuns = pgTable(
   "calibration_runs",
   {
     id: text("id").primaryKey(),
     intent: text("intent").notNull(),
-    confidence: real("confidence").notNull(),
+    confidence: doublePrecision("confidence").notNull(),
     /** null when the request was unavailable */
     minerId: text("miner_id"),
     status: text("status").notNull(),
     latencyMs: integer("latency_ms").notNull(),
-    costUsd: real("cost_usd"),
+    costUsd: doublePrecision("cost_usd"),
     intentRequestId: text("intent_request_id"),
     createdAt: text("created_at").notNull(),
   },
