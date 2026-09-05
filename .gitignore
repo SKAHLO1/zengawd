@@ -16,3 +16,11 @@ packages/contracts/broadcast/
 .vercel
 DECISIONS.md
 SUBMISSION.md
+# Compiled output from a stray tsc run (packages export TypeScript source directly).
+# Scoped to packages/ so apps/web/next-env.d.ts is untouched.
+packages/**/*.d.ts
+packages/**/*.d.ts.map
+packages/**/src/*.js
+packages/**/src/*.js.map
+packages/*/drizzle.config.js
+packages/*/drizzle.config.js.map

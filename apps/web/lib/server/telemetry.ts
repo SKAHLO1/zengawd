@@ -1,5 +1,4 @@
-import { desc, sql } from "drizzle-orm";
-import { calibrationRuns, getDb, intentRequests } from "@zengawd/db";
+import { calibrationRuns, desc, getDb, intentRequests, sql } from "@zengawd/db";
 
 export type IntentStats = {
   intent: string;
@@ -50,8 +49,8 @@ function percentile(sorted: number[], p: number): number | null {
   return sorted[idx] ?? null;
 }
 
-export function readTail(limit = 100): TailRow[] {
-  const db = getDb();
+export async function readTail(limit = 100): Promise<TailRow[]> {
+  const db = await getDb();
   return db
     .select({
       id: intentRequests.id,
@@ -68,13 +67,12 @@ export function readTail(limit = 100): TailRow[] {
     })
     .from(intentRequests)
     .orderBy(desc(intentRequests.createdAt))
-    .limit(limit)
-    .all();
+    .limit(limit);
 }
 
-export function readTelemetry(): TelemetrySnapshot {
-  const db = getDb();
-  const rows = db
+export async function readTelemetry(): Promise<TelemetrySnapshot> {
+  const db = await getDb();
+  const rows = await db
     .select({
       intent: intentRequests.intent,
       status: intentRequests.status,
@@ -84,8 +82,7 @@ export function readTelemetry(): TelemetrySnapshot {
       costUsd: intentRequests.costUsd,
       tx: intentRequests.settlementTxHash,
     })
-    .from(intentRequests)
-    .all();
+    .from(intentRequests);
 
   const byIntent = new Map<string, typeof rows>();
   for (const r of rows) {
@@ -127,7 +124,7 @@ export function readTelemetry(): TelemetrySnapshot {
     })
     .sort((a, b) => b.total - a.total);
 
-  const cal = db
+  const cal = await db
     .select({
       intent: calibrationRuns.intent,
       confidence: calibrationRuns.confidence,
@@ -136,8 +133,7 @@ export function readTelemetry(): TelemetrySnapshot {
       latencyMs: calibrationRuns.latencyMs,
       costUsd: calibrationRuns.costUsd,
     })
-    .from(calibrationRuns)
-    .all();
+    .from(calibrationRuns);
   const calMap = new Map<string, CalibrationPoint & { lat: number[]; cost: number[]; minerSet: Set<string> }>();
   for (const r of cal) {
     const key = `${r.intent}|${r.confidence}`;
@@ -175,13 +171,13 @@ export function readTelemetry(): TelemetrySnapshot {
     },
     intents,
     calibration,
-    tail: readTail(100),
+    tail: await readTail(100),
   };
 }
 
-export function countRows(): number {
-  const db = getDb();
-  const r = db.select({ c: sql<number>`count(*)` }).from(intentRequests).get();
+export async function countRows(): Promise<number> {
+  const db = await getDb();
+  const [r] = await db.select({ c: sql<number>`count(*)` }).from(intentRequests).limit(1);
   return r?.c ?? 0;
 }
 

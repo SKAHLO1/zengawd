@@ -15,7 +15,6 @@
   "dependencies": {
     "@zengawd/db": "workspace:*",
     "@zengawd/telegraph": "workspace:*",
-    "drizzle-orm": "^0.44.5",
     "viem": "^2.37.6"
   },
   "devDependencies": {

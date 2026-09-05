@@ -1,5 +1,4 @@
-import { eq } from "drizzle-orm";
-import { getDb, verdicts } from "@zengawd/db";
+import { eq, getDb, verdicts } from "@zengawd/db";
 import { recordVerdictOnchain, type AttestationResult, type Verdict } from "@zengawd/engine";
 
 /**
@@ -9,7 +8,8 @@ import { recordVerdictOnchain, type AttestationResult, type Verdict } from "@zen
 export async function attestVerdict(verdict: Verdict): Promise<AttestationResult> {
   const result = await recordVerdictOnchain(verdict);
   if (result.txHash) {
-    getDb().update(verdicts).set({ onchainTxHash: result.txHash }).where(eq(verdicts.id, verdict.id)).run();
+    const db = await getDb();
+    await db.update(verdicts).set({ onchainTxHash: result.txHash }).where(eq(verdicts.id, verdict.id));
   }
   return result;
 }

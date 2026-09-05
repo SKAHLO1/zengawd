@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { desc, and, eq } from "drizzle-orm";
 import { getAddress, isAddress, zeroAddress, type Address } from "viem";
-import { getDb, verdicts } from "@zengawd/db";
+import { and, desc, eq, getDb, verdicts } from "@zengawd/db";
 import { buildGuardTarget, runGuard, verdictToJson } from "@zengawd/engine";
 import { attestVerdict } from "@/lib/server/attest";
 
@@ -78,15 +77,15 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   // URL-only targets all carry the zero address as callee, so they share no cache key: never serve them from cache.
   const cacheable = built.target.to !== zeroAddress;
-  const cached = !cacheable
-    ? undefined
-    : getDb()
-    .select()
-    .from(verdicts)
-    .where(and(eq(verdicts.targetAddress, built.target.to), eq(verdicts.chainId, chainId)))
-    .orderBy(desc(verdicts.createdAt))
-    .limit(1)
-    .get();
+  const db = await getDb();
+  const [cached] = cacheable
+    ? await db
+        .select()
+        .from(verdicts)
+        .where(and(eq(verdicts.targetAddress, built.target.to), eq(verdicts.chainId, chainId)))
+        .orderBy(desc(verdicts.createdAt))
+        .limit(1)
+    : [];
 
   if (cached) {
     const ageSec = (Date.now() - Date.parse(cached.createdAt)) / 1000;

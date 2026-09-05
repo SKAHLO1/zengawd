@@ -15,7 +15,7 @@ apps/web              Next.js 16 app: /guard, /approvals, /telemetry (public), A
 packages/telegraph    Telegraph client: requestIntent(), x402 challenge/settle/retry, telemetry rows
 packages/engine       Calldata decoding, 13 signal adapters, scoring + escalation, attestation, bench, calibration
 packages/contracts    Foundry: ZengawdPolicy.sol, ZengawdGuardModule.sol, 14 tests
-packages/db           Drizzle schema + migrations (SQLite driver; see DECISIONS.md)
+packages/db           Drizzle schema + migrations (Postgres; PGlite in tests — see DECISIONS.md)
 services/watcher      Approval monitoring loop with opt-in auto-revocation
 ```
 
@@ -24,7 +24,8 @@ services/watcher      Approval monitoring loop with opt-in auto-revocation
 ```bash
 pnpm install
 cp .env.example .env          # fill TELEGRAPH_EVM_PRIVATE_KEY with a burner funded with Base Sepolia USDC
-pnpm db:migrate
+                              # and DATABASE_URL with a Postgres connection string (Supabase works)
+pnpm db:migrate               # uses DATABASE_MIGRATION_URL (session mode), else DATABASE_URL
 pnpm dev                      # http://localhost:3000
 ```
 
@@ -32,7 +33,7 @@ Other commands:
 
 | Command | What it does |
 |---|---|
-| `pnpm test` | Vitest for db, telegraph, engine (30 tests; mocks exist only in `*.test.ts`) |
+| `pnpm test` | Vitest for db, telegraph, engine (29 tests on PGlite; mocks exist only in `*.test.ts`) |
 | `pnpm forge:test` | Foundry suite (needs `forge` on PATH) |
 | `pnpm --filter @zengawd/telegraph live-check` | One real intent end to end, prints the `intent_requests` row |
 | `pnpm calibrate [--loop]` | Same benchmark payload per intent at confidence 0.5 to 0.9, feeds the `/telemetry` chart |
@@ -82,7 +83,7 @@ Proven against the live network, with transactions anyone can check:
   `recordVerdict`, e.g. [`0xe1d14b1e…`](https://sepolia.basescan.org/tx/0xe1d14b1e84024d047d8387d02ee729d2b9b005831da0a2d818c0726b80e85312).
 - Discovery probed: 45 canonical intents, 129 active miners; every engine intent has live miners except
   `TWITTER_SEARCH` (0), which is gated before spending.
-- Tests: 28 unit (db 2, telegraph 8, engine 20) and 14 Foundry, including the Safe module revert and stale-verdict
+- Tests: 29 unit (db 1, telegraph 8, engine 20) and 14 Foundry, including the Safe module revert and stale-verdict
   paths.
 - `pnpm dev` serves `/`, `/guard`, `/approvals`, `/telemetry`; `/api/approvals` scans chain logs live.
 

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@zengawd/db", "@zengawd/telegraph", "@zengawd/engine"],
-  serverExternalPackages: ["better-sqlite3"],
+  serverExternalPackages: ["postgres", "@electric-sql/pglite"],
   images: { unoptimized: true },
 };
 

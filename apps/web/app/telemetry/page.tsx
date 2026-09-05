@@ -4,8 +4,8 @@ import { readTelemetry } from "@/lib/server/telemetry";
 
 export const dynamic = "force-dynamic";
 
-export default function TelemetryPage() {
-  const t = readTelemetry();
+export default async function TelemetryPage() {
+  const t = await readTelemetry();
   const stat = (label: string, value: string) => (
     <div className="border border-[#1e1e1e] p-4">
       <p className="font-mono text-[10px] tracking-widest text-[#8a8a8a]">{label}</p>
