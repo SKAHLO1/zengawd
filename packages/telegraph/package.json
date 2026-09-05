@@ -1,0 +1,29 @@
+{
+  "name": "@zengawd/telegraph",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "live-check": "tsx scripts/live-check.ts"
+  },
+  "dependencies": {
+    "@x402/core": "^2.11.0",
+    "@x402/evm": "^2.11.0",
+    "@x402/fetch": "^2.11.0",
+    "@zengawd/db": "workspace:*",
+    "dotenv": "^16.6.1",
+    "viem": "^2.37.6",
+    "drizzle-orm": "^0.44.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.17.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
