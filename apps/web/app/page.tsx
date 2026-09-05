@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GlobeField } from "@/components/home/globe-field";
 
 const cards = [
   { href: "/guard", title: "Guard a transaction", body: "Paste a token, contract, dApp URL or raw transaction. Zengawd fans it out across up to thirteen Telegraph intents and returns ALLOW, WARN or BLOCK with every signal, miner and settlement hash shown." },
@@ -9,7 +10,12 @@ const cards = [
 export default function Home() {
   return (
     <div className="space-y-12">
-      <section className="border border-[#1e1e1e] p-8">
+      <section className="relative overflow-hidden border border-[#1e1e1e] p-8">
+        {/* Decorative: sits behind the copy, clipped by the section, hidden on small screens. */}
+        <div className="pointer-events-none absolute -right-24 top-1/2 hidden h-[460px] w-[460px] -translate-y-1/2 opacity-70 lg:block">
+          <GlobeField />
+        </div>
+        <div className="relative">
         <p className="font-mono text-[10px] tracking-[0.3em] text-[#2196f3]">ONCHAIN TRANSACTION GUARD</p>
         <h1 className="font-display mt-3 text-5xl uppercase tracking-tight md:text-7xl">
           A verdict is not a label.
@@ -28,6 +34,7 @@ export default function Home() {
           <Link href="/telemetry" className="border border-[#2e2e2e] px-5 py-3 font-mono text-xs tracking-[0.2em] text-[#f2ede6] hover:border-[#2196f3]">
             VIEW TELEMETRY
           </Link>
+        </div>
         </div>
       </section>
       <section className="grid gap-4 md:grid-cols-3">

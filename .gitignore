@@ -4,8 +4,6 @@ dist/
 out/
 *.tsbuildinfo
 .DS_Store
-.env
-.env.*
 !.env.example
 .burner.tmp
 data/*.sqlite
@@ -24,3 +22,4 @@ packages/**/src/*.js
 packages/**/src/*.js.map
 packages/*/drizzle.config.js
 packages/*/drizzle.config.js.map
+config.bat
