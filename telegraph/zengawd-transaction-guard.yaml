@@ -9,12 +9,12 @@ description: >
   recorded on Base Sepolia in ZengawdPolicy. Answers are served from the verdict store when fresh, so identical
   questions do not re-run the pipeline.
 
-base_url: https://REPLACE-WITH-YOUR-DEPLOYMENT
+base_url: https://zengawd-web.vercel.app
 
 docs:
-  website: https://REPLACE-WITH-YOUR-DEPLOYMENT
-  documentation: https://REPLACE-WITH-YOUR-DEPLOYMENT
-  repository: https://github.com/REPLACE-ME/zengawd
+  website: https://zengawd-web.vercel.app
+  documentation: https://zengawd-web.vercel.app
+  repository: https://github.com/SKAHLO1/zengawd
 
 auth:
   type: none

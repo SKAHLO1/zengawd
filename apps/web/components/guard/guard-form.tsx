@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { VerdictJson, AttestationResult } from "@zengawd/engine";
-import { connectWallet, hasInjectedWallet, onWalletChange, type WalletState } from "@/lib/wallet";
+import { useWallet } from "@/lib/wallet";
 import { VerdictView } from "./verdict-view";
 
 type GuardResponse = { verdict: VerdictJson; parsed: string; attestation: AttestationResult } | { error: string };
@@ -14,7 +14,7 @@ const EXAMPLES = [
 ];
 
 export function GuardForm() {
-  const [wallet, setWallet] = useState<WalletState | null>(null);
+  const { wallet, available, connect: connectWalletFromHook } = useWallet();
   const [manualFrom, setManualFrom] = useState("");
   const [chainId, setChainId] = useState(1);
   const [input, setInput] = useState("");
@@ -25,7 +25,6 @@ export function GuardForm() {
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
 
-  useEffect(() => onWalletChange((s) => setWallet((w) => (w ? { ...w, ...s } : w))), []);
   useEffect(() => {
     if (!startedAt) return;
     const t = setInterval(() => setElapsed(Date.now() - startedAt), 200);
@@ -35,8 +34,7 @@ export function GuardForm() {
   async function connect() {
     setError(null);
     try {
-      const w = await connectWallet();
-      setWallet(w);
+      const w = await connectWalletFromHook();
       setChainId(w.chainId);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -81,7 +79,7 @@ export function GuardForm() {
           </span>
         ) : (
           <>
-            <button type="button" onClick={connect} disabled={!hasInjectedWallet()} className="border border-[#2196f3] bg-[#2196f3] px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#050505] disabled:opacity-40">
+            <button type="button" onClick={connect} disabled={!available} className="border border-[#2196f3] bg-[#2196f3] px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#050505] disabled:opacity-40">
               CONNECT WALLET
             </button>
             <span className="font-mono text-[10px] text-[#5a5a5a]">or enter the signing address</span>

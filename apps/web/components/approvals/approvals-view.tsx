@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Address, Hex } from "viem";
-import { connectWallet, hasInjectedWallet, onWalletChange, sendFromWallet, type WalletState } from "@/lib/wallet";
+import { sendFromWallet, useWallet } from "@/lib/wallet";
 
 type Row = {
   token: Address;
@@ -22,7 +22,7 @@ type Resp = { owner: Address; chainId: number; registered: boolean; autoRevokeEn
 const COLOR: Record<string, string> = { ALLOW: "#22c55e", WARN: "#f59e0b", BLOCK: "#ef4444", INSUFFICIENT_SIGNAL: "#8a8a8a" };
 
 export function ApprovalsView() {
-  const [wallet, setWallet] = useState<WalletState | null>(null);
+  const { wallet, available, connect } = useWallet();
   const [manual, setManual] = useState("");
   const [chainId, setChainId] = useState(1);
   const [data, setData] = useState<Exclude<Resp, { error: string }> | null>(null);
@@ -31,7 +31,6 @@ export function ApprovalsView() {
   const [safe, setSafe] = useState("");
   const [txs, setTxs] = useState<Record<string, string>>({});
 
-  useEffect(() => onWalletChange((s) => setWallet((w) => (w ? { ...w, ...s } : w))), []);
   const address = wallet?.address ?? (manual.trim() as Address | "");
 
   async function load() {
@@ -78,7 +77,7 @@ export function ApprovalsView() {
           <span className="font-mono text-xs text-[#22c55e]">● {wallet.address}</span>
         ) : (
           <>
-            <button type="button" onClick={() => connectWallet().then((w) => { setWallet(w); setChainId(w.chainId); }).catch((e: Error) => setError(e.message))} disabled={!hasInjectedWallet()} className="border border-[#2196f3] bg-[#2196f3] px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#050505] disabled:opacity-40">
+            <button type="button" onClick={() => { setError(null); connect().then((w) => setChainId(w.chainId)).catch((e: Error) => setError(e.message)); }} disabled={!available} className="border border-[#2196f3] bg-[#2196f3] px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#050505] disabled:opacity-40">
               CONNECT WALLET
             </button>
             <input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="or paste an address to inspect (read-only)" className="min-w-[24rem] border border-[#2e2e2e] bg-[#0e0e0e] px-3 py-2 font-mono text-xs outline-none focus:border-[#2196f3]" />
