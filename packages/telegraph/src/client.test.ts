@@ -39,7 +39,7 @@ const miners = [{ id: "7302", slug: "chainwire-holder-count", signal_mapping: { 
 
 describe("TelegraphClient.requestIntent", () => {
   it("returns ok, extracts miner, confidence and settlement tx, and records one row", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const paidFetch: FetchLike = async () => json(okBody, 200, { "payment-response": settlementHeader("0xtx1") });
     const client = new TelegraphClient({ nodeUrl: NODE, db, paidFetch, plainFetch: catalogFetch({ TOKEN_HOLDER_COUNT: 5 }, miners) });
     const r = await client.requestIntent({ intent: "TOKEN_HOLDER_COUNT", payload: { query: "q" }, minConfidence: 0.6, deadlineMs: 4000 });
@@ -49,7 +49,7 @@ describe("TelegraphClient.requestIntent", () => {
     expect(r.confidence).toBe(0.95);
     expect(r.txHash).toBe("0xtx1");
     expect(r.costUsd).toBe(0.01);
-    const rows = db.select().from(intentRequests).all();
+    const rows = await db.select().from(intentRequests);
     expect(rows).toHaveLength(1);
     expect(rows[0]?.status).toBe("ok");
     expect(rows[0]?.minerId).toBe("7302");
@@ -58,7 +58,7 @@ describe("TelegraphClient.requestIntent", () => {
   });
 
   it("resolves to unavailable on deadline and still records a row", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const paidFetch: FetchLike = (_i, init) =>
       new Promise((_, reject) => {
         init?.signal?.addEventListener("abort", () => reject(new DOMException("aborted", "AbortError")));
@@ -68,11 +68,11 @@ describe("TelegraphClient.requestIntent", () => {
     expect(r.status).toBe("unavailable");
     if (r.status !== "unavailable") throw new Error();
     expect(r.reason).toMatch(/deadline of 50ms/);
-    expect(db.select().from(intentRequests).all()).toHaveLength(1);
+    expect(await db.select().from(intentRequests)).toHaveLength(1);
   });
 
   it("caps payment retries at 2 and reports unavailable on persistent 402", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     let calls = 0;
     const paidFetch: FetchLike = async () => {
       calls++;
@@ -82,42 +82,42 @@ describe("TelegraphClient.requestIntent", () => {
     const r = await client.requestIntent({ intent: "TOKEN_HOLDER_COUNT", payload: { query: "q" }, minConfidence: 0.6, deadlineMs: 4000 });
     expect(r.status).toBe("unavailable");
     expect(calls).toBe(2);
-    expect(db.select().from(intentRequests).all()[0]?.status).toBe("unavailable");
+    expect((await db.select().from(intentRequests))[0]?.status).toBe("unavailable");
   });
 
   it("rejects a response the router classified into a different intent", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const paidFetch: FetchLike = async () => json({ ...okBody, intent: "CRYPTO_PRICE" });
     const client = new TelegraphClient({ nodeUrl: NODE, db, paidFetch, plainFetch: catalogFetch({ TOKEN_HOLDER_COUNT: 5 }, miners) });
     const r = await client.requestIntent({ intent: "TOKEN_HOLDER_COUNT", payload: { query: "q" }, minConfidence: 0.6, deadlineMs: 4000 });
     expect(r.status).toBe("unavailable");
     if (r.status !== "unavailable") throw new Error();
     expect(r.reason).toMatch(/classified/);
-    expect(db.select().from(intentRequests).all()[0]?.minerId).toBe("7302");
+    expect((await db.select().from(intentRequests))[0]?.minerId).toBe("7302");
   });
 
   it("rejects a response whose miner-reported confidence is below the threshold", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const paidFetch: FetchLike = async () => json({ ...okBody, result: { holders: 1, confidence: 0.3 } });
     const client = new TelegraphClient({ nodeUrl: NODE, db, paidFetch, plainFetch: catalogFetch({ TOKEN_HOLDER_COUNT: 5 }, miners) });
     const r = await client.requestIntent({ intent: "TOKEN_HOLDER_COUNT", payload: { query: "q" }, minConfidence: 0.6, deadlineMs: 4000 });
     expect(r.status).toBe("unavailable");
-    expect(db.select().from(intentRequests).all()[0]?.returnedConfidence).toBe(0.3);
+    expect((await db.select().from(intentRequests))[0]?.returnedConfidence).toBe(0.3);
   });
 
   it("marks a miner unavailable when its own serve time exceeds the declared deadline", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const paidFetch: FetchLike = async () => json({ ...okBody, duration_ms: 9000 });
     const client = new TelegraphClient({ nodeUrl: NODE, db, paidFetch, plainFetch: catalogFetch({ TOKEN_HOLDER_COUNT: 5 }, miners) });
     const r = await client.requestIntent({ intent: "TOKEN_HOLDER_COUNT", payload: { query: "q" }, minConfidence: 0.6, deadlineMs: 4000 });
     expect(r.status).toBe("unavailable");
     if (r.status !== "unavailable") throw new Error();
     expect(r.reason).toMatch(/9000ms to serve, beyond the declared 4000ms/);
-    expect(db.select().from(intentRequests).all()[0]?.minerId).toBe("7302");
+    expect((await db.select().from(intentRequests))[0]?.minerId).toBe("7302");
   });
 
   it("accepts a miner that serves within the declared deadline even though settlement took longer", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     // total wall clock is dominated by the payment rail; the miner itself answered in 700ms
     const paidFetch: FetchLike = async () => json({ ...okBody, duration_ms: 700 });
     const client = new TelegraphClient({ nodeUrl: NODE, db, paidFetch, plainFetch: catalogFetch({ TOKEN_HOLDER_COUNT: 5 }, miners) });
@@ -126,7 +126,7 @@ describe("TelegraphClient.requestIntent", () => {
   });
 
   it("refuses an intent with no live miners without spending", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     let calls = 0;
     const paidFetch: FetchLike = async () => {
       calls++;
@@ -138,6 +138,6 @@ describe("TelegraphClient.requestIntent", () => {
     if (r.status !== "unavailable") throw new Error();
     expect(r.reason).toMatch(/no live miners/);
     expect(calls).toBe(0);
-    expect(db.select().from(intentRequests).all()).toHaveLength(1);
+    expect(await db.select().from(intentRequests)).toHaveLength(1);
   });
 });

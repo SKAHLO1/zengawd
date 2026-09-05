@@ -3,8 +3,7 @@
  * declares one intent, pays via x402, and prints the resulting `intent_requests` row.
  * Usage: pnpm --filter @zengawd/telegraph live-check [INTENT] ["query"]
  */
-import { desc } from "drizzle-orm";
-import { getDb, intentRequests } from "@zengawd/db";
+import { desc, getDb, intentRequests } from "@zengawd/db";
 import { requestIntent, getTelegraphClient } from "../src/index";
 
 const intent = process.argv[2] ?? "TOKEN_HOLDER_COUNT";
@@ -19,7 +18,8 @@ console.log(`node=${client.nodeUrl} intent=${intent} live_miners=${count}`);
 const result = await requestIntent({ intent, payload: { query }, minConfidence: 0.6, deadlineMs: 20_000 });
 console.log(JSON.stringify(result, null, 2));
 
-const row = getDb().select().from(intentRequests).orderBy(desc(intentRequests.createdAt)).limit(1).all()[0];
+const liveDb = await getDb();
+const [row] = await liveDb.select().from(intentRequests).orderBy(desc(intentRequests.createdAt)).limit(1);
 if (!row) throw new Error("no intent_requests row written");
 console.log("\nintent_requests row:");
 console.log(

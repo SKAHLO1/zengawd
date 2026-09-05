@@ -8,8 +8,7 @@
  * Usage: pnpm watcher            (loop, WATCHER_INTERVAL_MS)
  *        pnpm watcher:once       (single pass)
  */
-import { and, eq } from "drizzle-orm";
-import { getDb, newId, nowIso, watchedApprovals, watchedUsers } from "@zengawd/db";
+import { and, eq, getDb, newId, nowIso, watchedApprovals, watchedUsers } from "@zengawd/db";
 import { loadEnv } from "@zengawd/telegraph";
 import { approvalCalldata, recordVerdictOnchain, runGuard, scanApprovals, type GuardTarget, type OutstandingApproval, type Verdict } from "@zengawd/engine";
 import { submitAutoRevocation } from "./revoke";
@@ -20,8 +19,8 @@ const intervalMs = Number(process.env.WATCHER_INTERVAL_MS ?? "600000");
 const log = (m: string) => console.log(`[watcher ${new Date().toISOString()}] ${m}`);
 
 export async function pass(): Promise<void> {
-  const db = getDb();
-  const users = db.select().from(watchedUsers).all();
+  const db = await getDb();
+  const users = await db.select().from(watchedUsers);
   if (users.length === 0) {
     log("no registered users (register one via POST /api/approvals/register)");
     return;
@@ -36,9 +35,9 @@ export async function pass(): Promise<void> {
       continue;
     }
     log(`${owner} chain ${u.chainId}: ${outstanding.length} outstanding approvals`);
-    syncRows(u.chainId, owner, outstanding);
+    await syncRows(u.chainId, owner, outstanding);
 
-    const rows = db.select().from(watchedApprovals).where(and(eq(watchedApprovals.userAddress, owner), eq(watchedApprovals.chainId, u.chainId))).all();
+    const rows = await db.select().from(watchedApprovals).where(and(eq(watchedApprovals.userAddress, owner), eq(watchedApprovals.chainId, u.chainId)));
     for (const row of rows) {
       if (!outstanding.some((o) => o.token === row.tokenAddress && o.spender === row.spenderAddress)) continue; // revoked meanwhile
       const target: GuardTarget = {
@@ -83,28 +82,28 @@ export async function pass(): Promise<void> {
           log("  auto-revocation not enabled for this user (opt-in is off or no Safe delegated); recommendation only");
         }
       }
-      db.update(watchedApprovals).set(update).where(eq(watchedApprovals.id, row.id)).run();
+      await db.update(watchedApprovals).set(update).where(eq(watchedApprovals.id, row.id));
       void onchainTx;
     }
   }
 }
 
-function syncRows(chainId: number, owner: `0x${string}`, outstanding: OutstandingApproval[]): void {
-  const db = getDb();
-  const existing = db.select().from(watchedApprovals).where(and(eq(watchedApprovals.userAddress, owner), eq(watchedApprovals.chainId, chainId))).all();
+async function syncRows(chainId: number, owner: `0x${string}`, outstanding: OutstandingApproval[]): Promise<void> {
+  const db = await getDb();
+  const existing = await db.select().from(watchedApprovals).where(and(eq(watchedApprovals.userAddress, owner), eq(watchedApprovals.chainId, chainId)));
   for (const o of outstanding) {
     const hit = existing.find((e) => e.tokenAddress === o.token && e.spenderAddress === o.spender);
     if (hit) {
-      if (hit.allowance !== o.allowance) db.update(watchedApprovals).set({ allowance: o.allowance }).where(eq(watchedApprovals.id, hit.id)).run();
+      if (hit.allowance !== o.allowance) await db.update(watchedApprovals).set({ allowance: o.allowance }).where(eq(watchedApprovals.id, hit.id));
       continue;
     }
-    db.insert(watchedApprovals)
-      .values({ id: newId(), chainId, userAddress: owner, tokenAddress: o.token, spenderAddress: o.spender, tokenStandard: o.standard, allowance: o.allowance, createdAt: nowIso() })
-      .run();
+    await db
+      .insert(watchedApprovals)
+      .values({ id: newId(), chainId, userAddress: owner, tokenAddress: o.token, spenderAddress: o.spender, tokenStandard: o.standard, allowance: o.allowance, createdAt: nowIso() });
   }
   for (const e of existing) {
     if (!outstanding.some((o) => o.token === e.tokenAddress && o.spender === e.spenderAddress)) {
-      db.delete(watchedApprovals).where(eq(watchedApprovals.id, e.id)).run();
+      await db.delete(watchedApprovals).where(eq(watchedApprovals.id, e.id));
     }
   }
 }

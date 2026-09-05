@@ -53,7 +53,7 @@ export class TelegraphClient {
   readonly nodeUrl: string;
   readonly catalog: Catalog;
   private readonly paidFetch: FetchLike;
-  private readonly db: Db;
+  private readonly db: Promise<Db>;
   private readonly sendRoutingHints: boolean;
   private readonly settlementBudgetMs: number;
 
@@ -63,7 +63,7 @@ export class TelegraphClient {
     const plain = opts.plainFetch ?? fetch;
     this.paidFetch = opts.paidFetch ?? createPaidFetch(plain).paidFetch;
     this.catalog = new Catalog(this.nodeUrl, plain);
-    this.db = opts.db ?? getDb();
+    this.db = opts.db ? Promise.resolve(opts.db) : getDb();
     this.sendRoutingHints = opts.sendRoutingHints ?? cfg.sendRoutingHints;
     this.settlementBudgetMs = opts.settlementBudgetMs ?? X402_SETTLEMENT_BUDGET_MS;
   }
@@ -84,11 +84,13 @@ export class TelegraphClient {
     }
     const requestPayload = { url: `${this.nodeUrl}/engine/v1/ask`, method: "POST", body, intent: req.intent };
 
-    const finish = (result: IntentResult<T>, rec: Recorded): IntentResult<T> => {
-      this.record(id, req, opts, rec, Date.now() - started, requestPayload);
+    // The row is written before the result is returned (see the method contract above), so both
+    // helpers are async and every `return finish(...)` / `return unavailable(...)` resolves through them.
+    const finish = async (result: IntentResult<T>, rec: Recorded): Promise<IntentResult<T>> => {
+      await this.record(id, req, opts, rec, Date.now() - started, requestPayload);
       return result;
     };
-    const unavailable = (reason: string, extra: Partial<Recorded> = {}, extraResult: Partial<IntentResult<T>> = {}): IntentResult<T> =>
+    const unavailable = (reason: string, extra: Partial<Recorded> = {}, extraResult: Partial<IntentResult<T>> = {}): Promise<IntentResult<T>> =>
       finish(
         { status: "unavailable", reason, latencyMs: Date.now() - started, ...extraResult } as IntentResult<T>,
         {
@@ -246,15 +248,16 @@ export class TelegraphClient {
     }
   }
 
-  private record(
+  private async record(
     id: string,
     req: IntentRequest,
     opts: RequestOptions,
     rec: Recorded,
     latencyMs: number,
     requestPayload: unknown,
-  ): void {
-    this.db
+  ): Promise<void> {
+    const db = await this.db;
+    await db
       .insert(intentRequests)
       .values({
         id,
@@ -273,8 +276,7 @@ export class TelegraphClient {
         requestPayload: JSON.stringify(requestPayload),
         responsePayload: JSON.stringify(rec.responsePayload ?? null),
         createdAt: nowIso(),
-      })
-      .run();
+      });
   }
 }
 

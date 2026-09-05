@@ -4,14 +4,13 @@
  *
  * Usage: pnpm --filter @zengawd/engine tsx scripts/acceptance.ts
  */
-import { and, eq } from "drizzle-orm";
-import { getDb, intentRequests, verdicts as verdictsTable } from "@zengawd/db";
+import { and, eq, getDb, intentRequests, verdicts as verdictsTable } from "@zengawd/db";
 import { recordVerdictOnchain } from "../src/attest";
 import { runGuard } from "../src/pipeline";
 import type { GuardTarget } from "../src/types";
 
 const USER = "0x000000000000000000000000000000000000dEaD" as const;
-const db = getDb();
+const db = await getDb();
 
 const scenarios: { name: string; expect: string; target: GuardTarget }[] = [
   {
@@ -47,8 +46,8 @@ for (const s of scenarios) {
   const v = await runGuard(s.target);
 
   // Evidence read back from the database, joined to the telemetry rows this verdict produced.
-  const row = db.select().from(verdictsTable).where(eq(verdictsTable.id, v.id)).get();
-  const reqs = db.select().from(intentRequests).where(eq(intentRequests.verdictId, v.id)).all();
+  const [row] = await db.select().from(verdictsTable).where(eq(verdictsTable.id, v.id)).limit(1);
+  const reqs = await db.select().from(intentRequests).where(eq(intentRequests.verdictId, v.id));
   const served = reqs.filter((r) => r.status === "ok");
   const settled = served.filter((r) => r.settlementTxHash);
   const stage2 = reqs.filter((r) => r.requestedConfidence === 0.8);
@@ -69,12 +68,12 @@ for (const s of scenarios) {
 
   const att = await recordVerdictOnchain(v);
   if (att.txHash) {
-    db.update(verdictsTable).set({ onchainTxHash: att.txHash }).where(eq(verdictsTable.id, v.id)).run();
+    await db.update(verdictsTable).set({ onchainTxHash: att.txHash }).where(eq(verdictsTable.id, v.id));
   }
   console.log(`onchain attestation ${att.txHash ?? att.skipped ?? att.error}`);
 }
 
-const all = db.select().from(intentRequests).all();
+const all = await db.select().from(intentRequests);
 const miners = new Set(all.filter((r) => r.minerId).map((r) => r.minerId));
 console.log(`\n${"=".repeat(90)}`);
 console.log(`telemetry so far: ${all.length} intent requests, ${miners.size} distinct miners: ${[...miners].join(", ")}`);

@@ -24,7 +24,7 @@ export type PipelineDeps = {
 export async function runGuard(target: GuardTarget, deps: PipelineDeps = {}): Promise<Verdict> {
   const requestIntent = deps.requestIntent ?? (defaultRequestIntent as RequestIntentFn);
   const readFacts = deps.readFacts ?? readContractFacts;
-  const db = deps.db === undefined ? getDb() : deps.db;
+  const db = deps.db === undefined ? await getDb() : deps.db;
   const verdictId = newId();
   const createdAt = nowIso();
 
@@ -91,7 +91,8 @@ export async function runGuard(target: GuardTarget, deps: PipelineDeps = {}): Pr
   };
 
   if (db) {
-    db.insert(verdictsTable)
+    await db
+      .insert(verdictsTable)
       .values({
         id: verdictId,
         chainId: target.chainId,
@@ -109,8 +110,7 @@ export async function runGuard(target: GuardTarget, deps: PipelineDeps = {}): Pr
         totalCostUsd,
         payload: JSON.stringify(verdictToJson(verdict)),
         createdAt,
-      })
-      .run();
+      });
   }
   return verdict;
 }

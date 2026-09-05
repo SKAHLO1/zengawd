@@ -32,7 +32,7 @@ const BENCH_TARGET: GuardTarget = {
 const BENCH_FACTS: ContractFacts = { isContract: true, codeSize: 1, isErc20: true, isErc721: false, symbol: "USDC", name: "USD Coin", decimals: 6 };
 
 async function sweep(): Promise<void> {
-  const db = getDb();
+  const db = await getDb();
   const ctx = buildContext(BENCH_TARGET, decodeCalldata(BENCH_TARGET.to, BENCH_TARGET.calldata), BENCH_FACTS);
   const adapters = ALL_ADAPTERS.filter((a) => !onlyIntents || onlyIntents.includes(a.intent));
   const client = getTelegraphClient();
@@ -44,9 +44,9 @@ async function sweep(): Promise<void> {
       if (q.context) payload.context = q.context;
       const r = await requestIntent({ intent: adapter.intent, payload, minConfidence: confidence, deadlineMs: DEADLINE_MS });
       const minerId = r.status === "ok" ? r.minerId : (r.minerId ?? null);
-      db.insert(calibrationRuns)
-        .values({ id: newId(), intent: adapter.intent, confidence, minerId, status: r.status, latencyMs: r.latencyMs, costUsd: r.status === "ok" ? r.costUsd : null, intentRequestId: null, createdAt: nowIso() })
-        .run();
+      await db
+        .insert(calibrationRuns)
+        .values({ id: newId(), intent: adapter.intent, confidence, minerId, status: r.status, latencyMs: r.latencyMs, costUsd: r.status === "ok" ? r.costUsd : null, intentRequestId: null, createdAt: nowIso() });
       console.log(`${adapter.intent.padEnd(22)} conf=${confidence} live=${live ?? "?"} -> ${r.status.padEnd(11)} miner=${minerId ?? "-"} ${r.latencyMs}ms${r.status === "unavailable" ? `  (${r.reason})` : ""}`);
     }
   }

@@ -48,7 +48,7 @@ const malicious = {
 
 describe("runGuard", () => {
   it("ALLOWs a benign target without running Stage 2", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const seen: IntentRequest[] = [];
     const v = await runGuard(target, { db, requestIntent: mockNetwork(benign, seen), readFacts: async () => tokenFacts });
     expect(v.verdict).toBe("ALLOW");
@@ -56,7 +56,7 @@ describe("runGuard", () => {
     expect(v.score).toBeLessThan(THRESHOLDS.ALLOW_BELOW);
     expect(seen.every((r) => r.minConfidence === THRESHOLDS.STAGE1.minConfidence)).toBe(true);
     expect(seen.map((r) => r.intent)).not.toContain("TWITTER_SEARCH");
-    expect(db.select().from(verdicts).all()[0]?.verdict).toBe("ALLOW");
+    expect((await db.select().from(verdicts))[0]?.verdict).toBe("ALLOW");
     expect(v.verdictHash).toMatch(/^0x[0-9a-f]{64}$/);
   });
 
@@ -137,7 +137,7 @@ describe("runGuard", () => {
   });
 
   it("links every intent_requests row to the verdict id", async () => {
-    const db = openDb(":memory:");
+    const db = await openDb(":memory:");
     const linked: (string | undefined)[] = [];
     const rq: RequestIntentFn = (async (req: IntentRequest, opts?: { verdictId?: string }) => {
       linked.push(opts?.verdictId);
@@ -145,6 +145,6 @@ describe("runGuard", () => {
     }) as RequestIntentFn;
     const v = await runGuard(target, { db, requestIntent: rq, readFacts: async () => tokenFacts });
     expect(linked.every((id) => id === v.id)).toBe(true);
-    expect(db.select().from(intentRequests).all()).toHaveLength(0); // mock does not write; the real client does
+    expect(await db.select().from(intentRequests)).toHaveLength(0); // mock does not write; the real client does
   });
 });
