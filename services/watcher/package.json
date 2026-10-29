@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node init && tsx src/main.ts",
+    "start": "tsx src/main.ts",
     "once": "tsx src/main.ts --once",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run"

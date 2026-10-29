@@ -6,8 +6,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "node init && pnpm --filter @zengawd/web dev",
-    "build": "node init && pnpm -r --filter './packages/*' build && pnpm --filter @zengawd/web build",
+    "dev": "pnpm --filter @zengawd/web dev",
+    "build": "pnpm -r --filter './packages/*' build && pnpm --filter @zengawd/web build",
     "test": "pnpm -r --filter @zengawd/db --filter @zengawd/telegraph --filter @zengawd/engine test",
     "typecheck": "pnpm -r typecheck",
     "db:migrate": "pnpm --filter @zengawd/db migrate",
